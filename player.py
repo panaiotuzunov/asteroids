@@ -1,11 +1,11 @@
 import pygame
-from circleshape import CircleShape # ако се наложи ще имапортираме цялата библиотека
+from circleshape import * # ако се наложи ще имапортираме цялата библиотека
 from constants import PLAYER_RADIUS
 
 
 class Player(CircleShape):
     def __init__(self, x, y):
-        super().__init__(PLAYER_RADIUS)
+        super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
 
     def triangle(self):
@@ -17,5 +17,5 @@ class Player(CircleShape):
         return [a, b, c]
 
     def draw(self, screen):
-        pygame.draw.polygon(screen, "white", self.triangle(), 2)
+        pygame.draw.polygon(screen, "red", self.triangle(), 2)
 

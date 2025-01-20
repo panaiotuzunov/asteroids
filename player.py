@@ -1,6 +1,6 @@
 import pygame
 from circleshape import * # ако се наложи ще имапортираме цялата библиотека
-from constants import PLAYER_RADIUS
+from constants import *
 
 
 class Player(CircleShape):
@@ -17,5 +17,34 @@ class Player(CircleShape):
         return [a, b, c]
 
     def draw(self, screen):
-        pygame.draw.polygon(screen, "red", self.triangle(), 2)
+        pygame.draw.polygon(screen, "white", self.triangle(), 2)
+
+    def rotate(self, dt):
+        self.rotation += PLAYER_TURN_SPEED * dt
+
+    def update(self, dt):
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_a]:
+            self.rotate(-dt)
+        elif keys[pygame.K_LEFT]:   # ако нещо се счупи изтрий 
+            self.rotate(-dt)
+        if keys[pygame.K_d]:
+            self.rotate(dt)
+        elif keys[pygame.K_RIGHT]:  # ако нещо се счупи изтрий 
+            self.rotate(dt)
+        if keys[pygame.K_w]:
+            self.move(dt)
+        elif keys[pygame.K_UP]:     # ако нещо се счупи изтрий 
+            self.move(dt)    
+        if keys[pygame.K_s]:
+            self.move(-dt)    
+        elif keys[pygame.K_DOWN]:   # ако нещо се счупи изтрий 
+            self.move(-dt)   
+        
+
+    def move(self, dt):
+        forward = pygame.Vector2(0, 1).rotate(self.rotation)
+        self.position += forward * PLAYER_SPEED * dt
+            
 

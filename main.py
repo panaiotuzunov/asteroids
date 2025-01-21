@@ -18,17 +18,17 @@ def main():
     updatable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
     asteroids = pygame.sprite.Group()
+    shots = pygame.sprite.Group()
 
     Player.containers = (updatable, drawable)
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = updatable
-    Shot.containers = (updatable, drawable)
-    
+    Shot.containers = (shots, updatable, drawable)
 
     x = SCREEN_WIDTH / 2
     y = SCREEN_HEIGHT / 2
     player1 = Player(x, y)
-    asteroid_field1 = AsteroidField()
+    AsteroidField()
 
     while(True):
         for event in pygame.event.get():
@@ -39,6 +39,11 @@ def main():
             u.update(dt)
 
         for asteroid in asteroids:
+            for shot in shots:
+                if asteroid.collision(shot):
+                    asteroid.split()
+                    shot.kill()
+
             if asteroid.collision(player1):
                 print("Game over!")
                 exit()
@@ -49,7 +54,7 @@ def main():
             d.draw(screen)
         
         pygame.display.flip()
-        dt = clock.tick(144) / 1000 # test if 144 is OK
+        dt = clock.tick(144) / 1000 # switch based on monitor refresh rate
 
 if __name__ == "__main__":
     main()
